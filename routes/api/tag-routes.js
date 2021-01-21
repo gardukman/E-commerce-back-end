@@ -15,6 +15,8 @@ router.get('/', (req, res) => {
       console.log(err);
       res.status(400).json(err);
     })
+
+  // be sure to include its associated Product data
 });
 
 router.get('/:id', (req, res) => {
@@ -29,7 +31,7 @@ router.get('/:id', (req, res) => {
   })
     .then(dbRes => {
       if (!dbRes) {
-        res.status(404).json({ message: 'There is no tag with that ID!' });
+        res.status(404).json({ message: 'No tag with that ID' });
         return;
       }
       res.json(dbRes);
@@ -38,6 +40,7 @@ router.get('/:id', (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
+  // be sure to include its associated Product data
 });
 
 router.post('/', (req, res) => {
@@ -53,7 +56,6 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  // update a tag's name by its `id` value
   Tag.update(req.body, {
     where: {
       id: req.params.id
@@ -61,26 +63,7 @@ router.put('/:id', (req, res) => {
   })
     .then(dbData => {
       if (!dbData[0]) {
-        res.status(404).json({ message: 'We could not find a tag with that Id!' });
-        return;
-      }
-      res.json(dbData);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
-});
-
-router.delete('/:id', (req, res) => {
-  // delete on tag by its `id` value
-  Tag.destroy({
-    where: {
-      id: req.params.id
-    }
-  })
-    .then(dbData => {
-      if (!dbData) {
-        res.status(404).json({ message: 'We could not find a tag with that ID!' });
+        res.status(404).json({ message: 'No tag found with this id ' });
         return;
       }
       res.json(dbData);
@@ -89,6 +72,26 @@ router.delete('/:id', (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+
+router.delete('/:id', (req, res) => {
+  Tag.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbData => {
+    if (!dbData) {
+      res.status(404).json({ message: 'No tag found with this id ' });
+      return;
+    }
+    res.json(dbData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
+  // delete on tag by its `id` value
 });
 
 module.exports = router;

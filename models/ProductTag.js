@@ -6,21 +6,21 @@ class ProductTag extends Model {}
 
 ProductTag.init(
   {
-    // sets id
+    //set id
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
+      primaryKey: true,
       autoIncrement: true
     },
-    // sets the foreign key for the product
-    prod_id: {
+    //foreign key for product
+    product_id: {
       type: DataTypes.INTEGER,
       references: {
         model: 'product'
       }
     },
-    // sets the foreign key for the tag
+    //foreign key for tag
     tag_id: {
       type: DataTypes.INTEGER,
       references: {
@@ -28,7 +28,6 @@ ProductTag.init(
       }
     }
   },
-  
   {
     sequelize,
     timestamps: false,
